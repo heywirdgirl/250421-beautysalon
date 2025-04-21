@@ -1,4 +1,4 @@
-const HeroSection = () => {
+export default function Herosection() {
   return (
     <section
       className="relative bg-cover bg-center bg-no-repeat min-h-screen text-white flex items-center justify-center px-4"
@@ -23,5 +23,3 @@ const HeroSection = () => {
     </section>
   );
 };
-
-export default HeroSection;
