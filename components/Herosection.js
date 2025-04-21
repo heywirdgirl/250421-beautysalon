@@ -4,7 +4,7 @@ export default function Herosection() {
       className="relative bg-cover bg-center bg-no-repeat min-h-screen text-white flex items-center justify-center px-4"
       style={{ backgroundImage: `url('/images/bg.jpg')` }}
     >
-      <div className="text-center z-10 max-w-3xl">
+      <div className="text-left z-10 max-w-3xl pl-6 md:pl-24">
         <div className="text-sm text-gray-200 mb-2">123, Central Square, New York</div>
         <h2 className="text-5xl font-bold text-white mb-4">AK Beauty Salon</h2>
         <p className="text-lg text-gray-100 mb-6">
