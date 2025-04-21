@@ -2,7 +2,7 @@ export default function Herosection() {
   return (
     <section
       className="relative bg-cover bg-center bg-no-repeat min-h-screen text-white flex items-center justify-center px-4"
-      style={{ backgroundImage: `url('/images/home-model4.jpg')` }}
+      style={{ backgroundImage: `url('/images/bg.jpg')` }}
     >
       <div className="text-center z-10 max-w-3xl">
         <div className="text-sm text-gray-200 mb-2">123, Central Square, New York</div>
