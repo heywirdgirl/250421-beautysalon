@@ -1,19 +1,12 @@
-import { SiteConfig } from "@/types"
-
-import { env } from "@/env.mjs"
-
-export const siteConfig: SiteConfig = {
-  name: "Next Entree",
-  author: "redpangilinan",
-  description:
-    "Next.js 14+ starter template with app router, shadcn/ui, typesafe env, icons and configs setup.",
-  keywords: ["Next.js", "React", "Tailwind CSS", "Radix UI", "shadcn/ui"],
-  url: {
-    base: env.NEXT_PUBLIC_APP_URL,
-    author: "https://rdev.pro",
-  },
+export const siteConfig = {
+  name: "shadcn/ui themes",
+  url: "https://shadcn-ui-themes.vercel.app/",
+  ogImage: "/shadcn_ui-themes.jpg",
+  description: "Try out themes for shadcn/ui components.",
   links: {
-    github: "https://github.com/redpangilinan/next-entree",
+    twitter: "https://x.com/zebermvp",
+    github: "https://github.com/zebermvp/shadcn-ui-themes",
   },
-  ogImage: `${env.NEXT_PUBLIC_APP_URL}/og.jpg`,
-}
+};
+
+export type SiteConfig = typeof siteConfig;

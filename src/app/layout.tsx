@@ -1,37 +1,51 @@
-import "@/styles/globals.css"
+import "@/styles/globals.css";
+import { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 
-import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import { ThemeProvider } from "@/components/Providers";
+import { TailwindIndicator } from "@/components/TailwindIndicator";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { siteConfig } from "@/config/site";
+import { fontSans } from "@/lib/fonts";
+import { cn } from "@/lib/utils";
+import { Toaster as DefaultToaster } from "@/registry/default/ui/Toaster";
+import { Toaster as NewYorkToaster } from "@/registry/new-york/ui/Toaster";
 
-import { siteConfig } from "@/config/site"
-import { cn } from "@/lib/utils"
-import { ThemeProvider } from "@/components/theme-provider"
-
-const inter = Inter({ subsets: ["latin"] })
-
-interface RootLayoutProps {
-  children: React.ReactNode
-}
+import { ExamplesNav } from "@/components/ExamplesNav";
+import {
+  PageHeader,
+  PageHeaderDescription,
+  PageHeaderHeading,
+} from "@/components/PageHeader";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { Analytics } from "@/components/Analytics";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url.base),
   title: {
     default: siteConfig.name,
-    template: `%s | ${siteConfig.name}`,
+    template: `%s - ${siteConfig.name}`,
   },
+  metadataBase: new URL(siteConfig.url),
   description: siteConfig.description,
-  keywords: siteConfig.keywords,
+  keywords: [
+    "Next.js",
+    "React",
+    "Tailwind CSS",
+    "Server Components",
+    "Radix UI",
+  ],
   authors: [
     {
-      name: siteConfig.author,
-      url: siteConfig.url.author,
+      name: "ZeberMVP",
+      url: "https://ruben-zafra.vercel.app",
     },
   ],
-  creator: siteConfig.author,
+  creator: "ZeberMVP",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: siteConfig.url.base,
+    url: siteConfig.url,
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
@@ -49,39 +63,82 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: "@_rdev7",
+    creator: "@zebermvp",
   },
   icons: {
     icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
   },
-}
+  manifest: `${siteConfig.url}/site.webmanifest`,
+};
 
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
+};
+
+interface RootLayoutProps {
+  children: React.ReactNode;
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const cookieStore = await cookies();
+  const currentTheme = cookieStore.get("currentTheme")?.value || "default";
+
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head />
-      <body
-        className={cn(
-          "min-h-screen bg-background antialiased",
-          inter.className
-        )}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+    <>
+      <html lang="en" suppressHydrationWarning className={currentTheme}>
+        <head />
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable,
+          )}
         >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  )
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="relative flex min-h-screen flex-col">
+              <SiteHeader />
+              <div className="flex-1">
+                <div className="container relative">
+                  <PageHeader className="page-header pb-8">
+                    <PageHeaderHeading className="hidden md:block">
+                      Check out some examples.
+                    </PageHeaderHeading>
+                    <PageHeaderHeading className="md:hidden">
+                      Examples
+                    </PageHeaderHeading>
+                    <PageHeaderDescription>
+                      Dashboard, cards, authentication. Some examples built
+                      using the components. Use this as a reference when
+                      selecting a theme.
+                    </PageHeaderDescription>
+                  </PageHeader>
+                  <section>
+                    <ExamplesNav />
+                    <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow">
+                      {children}
+                    </div>
+                  </section>
+                </div>
+              </div>
+              <SiteFooter />
+            </div>
+            <TailwindIndicator />
+            <ThemeSwitcher />
+            <Analytics />
+            <NewYorkToaster />
+            <DefaultToaster />
+          </ThemeProvider>
+        </body>
+      </html>
+    </>
+  );
 }

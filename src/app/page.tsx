@@ -1,33 +1,43 @@
-import Link from "next/link"
+import { cookies } from "next/headers";
+import Image from "next/image";
 
-import { siteConfig } from "@/config/site"
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
-import { ModeToggle } from "@/components/mode-toggle"
+import { Mail } from "@/app/mail/components/Mail";
+import { accounts, mails } from "@/app/mail/Data";
 
-export default function Home() {
+export default function MailPage() {
+  const layout = cookies().get("react-resizable-panels:layout:mail");
+  const collapsed = cookies().get("react-resizable-panels:collapsed");
+
+  const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+  const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
+
   return (
-    <main className="flex h-screen items-center justify-center">
-      <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
-        <Icons.logo className="h-16 w-16" />
-        <h1 className="text-4xl font-semibold sm:text-5xl md:text-6xl lg:text-7xl">
-          {siteConfig.name}
-        </h1>
-        <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-          {siteConfig.description}
-        </p>
-        <div className="flex gap-2">
-          <Link
-            href={siteConfig.links.github}
-            target="_blank"
-            className={cn(buttonVariants({ size: "default" }))}
-          >
-            Get Started
-          </Link>
-          <ModeToggle />
-        </div>
+    <>
+      <div className="md:hidden">
+        <Image
+          src="/mail-dark.png"
+          width={1280}
+          height={727}
+          alt="Mail"
+          className="hidden dark:block"
+        />
+        <Image
+          src="/mail-light.png"
+          width={1280}
+          height={727}
+          alt="Mail"
+          className="block dark:hidden"
+        />
       </div>
-    </main>
-  )
+      <div className="hidden flex-col md:flex">
+        <Mail
+          accounts={accounts}
+          mails={mails}
+          defaultLayout={defaultLayout}
+          defaultCollapsed={defaultCollapsed}
+          navCollapsedSize={4}
+        />
+      </div>
+    </>
+  );
 }
